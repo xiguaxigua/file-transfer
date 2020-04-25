@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>文件传输助手</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  </head>
+  <body>
+    <div id="app">
+      {{ message }}
+      <input type="file" id="upload" name="upload" />
+      <button @click="upload">上传</button>
+    </div>
+
+    <script>
+      var app = new Vue({
+        el: '#app',
+        data: {
+          message: 'Hello Vue!'
+        },
+        methods: {
+          upload: function() {
+            var formData = new FormData();
+
+            formData.append('file', document.getElementById('upload').files[0]);
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/upload'); // 定义上传完成后的回调函数
+            xhr.onload = function() {
+              if (xhr.status === 200) {
+                console.log('上传成功');
+              } else {
+                console.log('出错了');
+              }
+            };
+            xhr.send(formData);
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "name": "file-transfer",
+  "productName": "FileTransfer",
+  "version": "1.1.0",
+  "description": "file transfer",
+  "main": "./main.prod.js",
+  "scripts": {
+    "electron-rebuild": "node -r ../internals/scripts/BabelRegister.js ../internals/scripts/ElectronRebuild.js",
+    "postinstall": "yarn electron-rebuild"
+  },
+  "license": "MIT",
+  "dependencies": {}
+}
