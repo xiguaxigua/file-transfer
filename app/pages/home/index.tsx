@@ -19,11 +19,8 @@ const STORAGE_KEY = 'FOLDER';
 export default function Home() {
   const [checked, setChecked] = useState(false);
   const [path, setPath] = useState('');
+  const [url, setUrl] = useState('');
   const [qrcodeData, setQrcode] = useState('');
-
-  if (window.location.origin.includes('9528')) {
-    return <div>该页面不支持在浏览器内打开</div>;
-  }
 
   function handleChange(value: boolean) {
     if (!path) {
@@ -55,19 +52,22 @@ export default function Home() {
 
   useEffect(() => {
     if (checked) {
+      const serverUrl = `http://${ip.address()}:9528/`;
+      setUrl(serverUrl);
       // eslint-disable-next-line promise/catch-or-return
-      qrcode.toDataURL(`http://${ip.address()}:9528/`).then((url: string) => {
-        setQrcode(url);
+      qrcode.toDataURL(serverUrl).then((qrcodeUrl: string) => {
+        setQrcode(qrcodeUrl);
         return null;
       });
     } else {
       setQrcode('');
+      setUrl('');
     }
   }, [checked]);
 
   return (
     <div className="page-home">
-      <h2>文件传输助手</h2>
+      <h1>文件传输助手</h1>
       <div className="form">
         <div className="row">
           <div className="label">服务状态：</div>
@@ -82,6 +82,10 @@ export default function Home() {
               {path || '选择目录'}
             </Button>
           </div>
+        </div>
+        <div className="row">
+          <div className="label">上传地址：</div>
+          <div className="column">{url || '开启服务后展示'}</div>
         </div>
         <div className="row">
           {qrcodeData ? (

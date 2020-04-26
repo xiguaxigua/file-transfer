@@ -40,13 +40,21 @@ function uploadFile(req: http.IncomingMessage, res: http.ServerResponse) {
     }
     const picmsg = buffer.slice(rems[0] + 2, rems[1]).toString();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const filename = (picmsg.match(/filename=".*"/g) as any)[0].split('"')[1];
+    let filename = (picmsg.match(/filename=".*"/g) as any)[0].split('"')[1];
 
     // 图片数据
     const nbuf = buffer.slice(rems[3] + 2, rems[rems.length - 2]);
     const folderPath = window.localStorage.getItem('FOLDER');
     if (!folderPath) return;
+
+    const fileList = fs.readdirSync(folderPath);
+
+    if (fileList.includes(filename)) {
+      filename = `${Date.now()}-${filename}`;
+    }
+
     const address = `${folderPath}/${filename}`;
+
     fs.writeFile(address, nbuf, err => {
       if (err) {
         res.write(err);

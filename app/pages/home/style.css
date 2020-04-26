@@ -1,12 +1,13 @@
 .page-home {
-  color: #000;
+  color: #333;
   width: 400px;
   margin: 0 auto;
   padding-top: 20px;
 }
 
-.page-home h2 {
+.page-home h1 {
   text-align: center;
+  color: #58b4ae;
 }
 
 .page-home .row {
@@ -22,6 +23,7 @@
 .page-home .column {
   flex: 1;
   padding-left: 10px;
+  color: #3490FF;
 }
 
 .page-home .ant-btn {

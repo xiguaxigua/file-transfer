@@ -10,6 +10,12 @@
     />
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script src="https://cdn.jsdelivr.net/npm/vant@2.6/lib/vant.min.js"></script>
+    <script>
+      window.Promise ||
+        document.write(
+          '<script src="https://cdn.llscdn.com/fe-static/vendor/es6-promise/4.1.0/es6-promise.auto.min.js""><\/script>'
+        );
+    </script>
     <style>
       input[type='file'] {
         display: none;
@@ -30,12 +36,36 @@
         ref="file"
         type="file"
         id="upload"
+        multiple
         name="upload"
       />
-      <van-button type="primary" icon="upgrade" :loading="loading" @click="triggerUpload">上传</van-button>
+      <van-button
+        type="primary"
+        icon="upgrade"
+        :loading="loading"
+        @click="triggerUpload"
+        >上传</van-button
+      >
     </div>
 
     <script>
+      function uploadFile(file) {
+        return new Promise(function(resolve, reject) {
+          var formData = new FormData();
+          formData.append('file', file);
+          var xhr = new XMLHttpRequest();
+          xhr.open('POST', '/upload');
+          xhr.onload = function() {
+            if (xhr.status === 200) {
+              resolve();
+            } else {
+              reject();
+            }
+          };
+          xhr.send(formData);
+        });
+      }
+
       var app = new Vue({
         el: '#app',
         data: function() {
@@ -48,24 +78,28 @@
             this.$refs.file.click();
           },
           upload: function() {
-            console.log('on change');
-            var file = document.getElementById('upload').files[0];
-            if (!file) return;
-            var formData = new FormData();
-            this.loading = true;
-            formData.append('file', file);
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', '/upload');
+            var flow = Promise.resolve();
+            var files = document.getElementById('upload').files;
             var self = this;
-            xhr.onload = function() {
-              if (xhr.status === 200) {
+            if (!files || !files.length) return;
+
+            this.loading = true;
+            [].slice.call(files).forEach(function(file) {
+              flow = flow.then(function() {
+                return uploadFile(file);
+              });
+            });
+
+            flow = flow.then(
+              function() {
+                self.loading = false;
                 vant.Toast.success('上传成功');
-              } else {
+              },
+              function() {
+                self.loading = false;
                 vant.Toast.fail('出错了');
               }
-              self.loading = false;
-            };
-            xhr.send(formData);
+            );
           }
         }
       });
