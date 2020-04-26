@@ -6,5 +6,8 @@
 
 ## 示例
 
-<img src="https://cdn.jsdelivr.net/npm/figure-bed@0.0.49/images/ft1.png" width="400" />
-<img src="https://cdn.jsdelivr.net/npm/figure-bed@0.0.49/images/ft2.png" width="308" />
+<img src="https://cdn.jsdelivr.net/npm/figure-bed@0.0.50/images/ft3.png" width="409" />
+
+## 下载地址
+
+https://github.com/xiguaxigua/file-transfer/releases
