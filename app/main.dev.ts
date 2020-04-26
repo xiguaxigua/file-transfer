@@ -9,7 +9,7 @@
  * `./app/main.prod.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
@@ -56,8 +56,8 @@ const createWindow = async () => {
 
   mainWindow = new BrowserWindow({
     show: false,
-    width: 1024,
-    height: 728,
+    width: 400,
+    height: 400,
     webPreferences:
       process.env.NODE_ENV === 'development' || process.env.E2E_BUILD === 'true'
         ? {
@@ -94,6 +94,17 @@ const createWindow = async () => {
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line
   new AppUpdater();
+
+  ipcMain.on('open-directory-dialog', event => {
+    return dialog
+      .showOpenDialog(mainWindow as BrowserWindow, {
+        properties: ['openDirectory']
+      })
+      .then(res => {
+        if (!res.canceled) event.sender.send('selected', res.filePaths);
+        return null;
+      });
+  });
 };
 
 /**

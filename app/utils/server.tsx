@@ -44,8 +44,9 @@ function uploadFile(req: http.IncomingMessage, res: http.ServerResponse) {
 
     // 图片数据
     const nbuf = buffer.slice(rems[3] + 2, rems[rems.length - 2]);
-    const address = `/Users/xigua/Downloads/${filename}`;
-
+    const folderPath = window.localStorage.getItem('FOLDER');
+    if (!folderPath) return;
+    const address = `${folderPath}/${filename}`;
     fs.writeFile(address, nbuf, err => {
       if (err) {
         res.write(err);

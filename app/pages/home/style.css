@@ -1,3 +1,36 @@
 .page-home {
   color: #000;
+  width: 400px;
+  margin: 0 auto;
+  padding-top: 20px;
+}
+
+.page-home h2 {
+  text-align: center;
+}
+
+.page-home .row {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.page-home .label {
+  width: 150px;
+  text-align: right;
+}
+
+.page-home .column {
+  flex: 1;
+  padding-left: 10px;
+}
+
+.page-home .ant-btn {
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.page-home .qrcode {
+  margin: 0 auto;
 }
