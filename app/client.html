@@ -4,34 +4,66 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>文件传输助手</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/vant@2.6/lib/index.css"
+    />
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vant@2.6/lib/vant.min.js"></script>
+    <style>
+      input[type='file'] {
+        display: none;
+      }
+      #app {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    </style>
   </head>
   <body>
     <div id="app">
-      {{ message }}
-      <input type="file" id="upload" name="upload" />
-      <button @click="upload">上传</button>
+      <input
+        @change="upload"
+        ref="file"
+        type="file"
+        id="upload"
+        name="upload"
+      />
+      <van-button type="primary" icon="upgrade" :loading="loading" @click="triggerUpload">上传</van-button>
     </div>
 
     <script>
       var app = new Vue({
         el: '#app',
-        data: {
-          message: 'Hello Vue!'
+        data: function() {
+          return {
+            loading: false
+          };
         },
         methods: {
+          triggerUpload: function() {
+            this.$refs.file.click();
+          },
           upload: function() {
+            console.log('on change');
+            var file = document.getElementById('upload').files[0];
+            if (!file) return;
             var formData = new FormData();
-
-            formData.append('file', document.getElementById('upload').files[0]);
+            this.loading = true;
+            formData.append('file', file);
             var xhr = new XMLHttpRequest();
-            xhr.open('POST', '/upload'); // 定义上传完成后的回调函数
+            xhr.open('POST', '/upload');
+            var self = this;
             xhr.onload = function() {
               if (xhr.status === 200) {
-                console.log('上传成功');
+                vant.Toast.success('上传成功');
               } else {
-                console.log('出错了');
+                vant.Toast.fail('出错了');
               }
+              self.loading = false;
             };
             xhr.send(formData);
           }
