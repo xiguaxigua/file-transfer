@@ -36,3 +36,50 @@
 .page-home .qrcode {
   margin: 0 auto;
 }
+
+.page-home .text-message-btn {
+  margin-left: 8px;
+}
+
+.section-title {
+  position: relative;
+}
+
+.clear-btn {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.section-footer {
+  display: flex;
+}
+
+.section-footer .ant-btn {
+  margin-left: 5px;
+}
+
+.section-content {
+  word-break: break-all;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 5px;
+  margin-bottom: 5px;
+  user-select: none;
+  cursor: pointer;
+}
+
+/* 优化抽屉样式 */
+.ant-drawer-header {
+  padding: 8px !important;
+  text-align: center;
+}
+
+.ant-drawer-close {
+  padding: 12px !important;
+}
+
+.ant-drawer-body {
+  padding: 10px !important;
+}

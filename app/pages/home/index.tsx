@@ -14,10 +14,13 @@ import './style.css';
 import { getFolder } from '../../utils';
 import { startServer, stopServer } from '../../utils/server';
 
+import TextSection from './text-section';
+
 const STORAGE_KEY = 'FOLDER';
 
 export default function Home() {
   const [checked, setChecked] = useState(false);
+  const [textVisible, setTextVisible] = useState(false);
   const [path, setPath] = useState('');
   const [url, setUrl] = useState('');
   const [qrcodeData, setQrcode] = useState('');
@@ -73,6 +76,15 @@ export default function Home() {
           <div className="label">服务状态：</div>
           <div className="column">
             <Switch onChange={handleChange} checked={checked} />
+            {checked && (
+              <Button
+                onClick={() => setTextVisible(true)}
+                size="small"
+                className="text-message-btn"
+              >
+                文本消息
+              </Button>
+            )}
           </div>
         </div>
         <div className="row">
@@ -98,6 +110,10 @@ export default function Home() {
           )}
         </div>
       </div>
+      <TextSection
+        visible={textVisible}
+        onClose={() => setTextVisible(false)}
+      />
     </div>
   );
 }
